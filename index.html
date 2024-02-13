@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Frank Glavin Park</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+</head>
+
+<body>
+
+  <div id="map" style="width: 600px; height: 400px"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="PPR_Program_Sites.geojson.geojson.geojson"></script>
+  <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+
+  <script>
+    // setView to lat,lng for Frank Glavin Park, zoom 12
+    // leaflet documentation under map tab
+    var map = L.map('map').setView([39.9885, -75.1063], 12);
+    
+    // adding mapbox basemap dark to show green points on top
+    // this also adds links to Mapbox and Open Street Map for attribution
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: '© <a href="https://www.mapbox.com/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        id: 'mapbox/dark-v11', 
+        accessToken: 'pk.eyJ1IjoibGF1cmVsYmVlIiwiYSI6ImNsc2RjbWlkNTB4OTIybXF1endnNjdvYmcifQ.CApmWsTNQCu9rQtB_kYCag'
+      }).addTo(map);
+
+
+    // variable sites brings PPR program sites data in
+// leaflet documentation under marker
+var recSites = L.geoJson(sites, { 
+pointToLayer: function(feature,latlng) {
+  console.log(feature.properties)
+  return L.circleMarker(latlng, {
+    radius: 3, 
+    color: 'green',
+  });   
+},
+
+// filter by attribute: PARK_NAME from PPR geojson
+ filter: function(feature, layer){
+          if(feature.properties.PARK_NAME === 'Frank Glavin Playground'){
+              return true
+                        };
+      } 
+
+    }).addTo(map)
+
+  </script>
+
+</body>
+</html>

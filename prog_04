@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Leaflet Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+
+<body>
+
+  <div id="map" style="width: 600px; height: 400px"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="PPR_Districts_2011.geojson.geojson.geojson"></script>
+
+  <script>
+
+    // var map = L.map('map').setView([0, 0], 1);
+
+    var map = L.map('map');
+
+L.mapbox.accessToken = 'pk.eyJ1IjoibGF1cmVsYmVlIiwiYSI6ImNsc2RjbWlkNTB4OTIybXF1endnNjdvYmcifQ.CApmWsTNQCu9rQtB_kYCag';
+
+L.mapbox.tileLayer('mapbox.streets') 
+  .addTo(map);
+
+    // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(map);
+
+    var parksRec = L.geoJson(PPR, {
+        pointToLayer: function(feature,latlng) {
+              console.log(feature.properties)
+              return L.circleMarker(latlng, {
+                radius: 2, 
+                color: 'green',
+                  //step4
+              });   
+          },
+
+
+/* filter: function(feature, layer){
+          if(feature.properties.name === 'Lisbon'){
+              return true
+                        }
+      } */
+      filter: function(feature, layer){
+          if(feature.properties.pop_max > 3000000){
+              return true
+                        };
+        
+      }
+    }).addTo(map)
+
+  </script>
+
+</body>
+</html>
